@@ -1,26 +1,24 @@
-# Use an official Python runtime as a base image
+# Base image (OS)
+
 FROM python:3.9-slim
 
-# Set working directory inside the container
+# Working directory
+
 WORKDIR /app
 
-# Install system dependencies (if needed) and upgrade pip
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    && pip install --upgrade pip \
-    && rm -rf /var/lib/apt/lists/*
+# Copy src code to container
 
-# Copy requirements first for caching layers
-COPY requirements.txt .
-
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy the rest of the application code
 COPY . .
 
-# Expose port 80 for the application
+# Run the build commands
+
+RUN pip install -r requirements.txt
+
+# expose port 80
+
 EXPOSE 80
 
-# Run the application
-CMD ["python", "run.py"]
+# serve the app / run the app (keep it running)
+
+CMD ["python","run.py"]
 
